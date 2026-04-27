@@ -1,0 +1,83 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\input{AEDmacros}
+\usepackage{caratula} % Version modificada para usar las macros de algo1 de ~> https://github.com/bcardiff/dc-tex
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[shortlabels]{enumitem}
+\usepackage{mlmodern}			
+\usepackage[spanish, activeacute]{babel}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{indentfirst}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{lmodern}
+
+% Contador de ejercicios
+\newcounter{ejercicio}
+\renewcommand{\theejercicio}{\arabic{ejercicio}}
+
+% Definición del entorno
+\tcbset{
+	myejercicio/.style={
+		enhanced,
+		colback=blue!5!white,
+		colframe=blue!75!black,
+		fonttitle=\bfseries,
+		title={Ejercicio~\theejercicio},
+		arc=1mm,
+		boxrule=0.8pt,
+		drop shadow,
+		before upper={\parindent15pt},
+		breakable
+	}
+}
+
+\newenvironment{ejercicio}
+{\refstepcounter{ejercicio}%
+	\begin{tcolorbox}[myejercicio]}
+	{\end{tcolorbox}}
+
+\newenvironment{solution}{\par\noindent\textbf{Solución: } }{}
+
+
+\titulo{Trabajo Práctico Nº1}
+\subtitulo{Programación Lineal}
+
+\fecha{\today}
+
+\materia{Introducción al modelado continuo}
+%\grupo{Grupo }
+
+\integrante{Espiñeira,  Matías}{464/22}{matiespi03@gmail.com}
+\integrante{}{}{}
+\integrante{}{}{}
+% Pongan cuantos integrantes quieran
+
+% Declaramos donde van a estar las figuras
+% No es obligatorio, pero suele ser comodo
+%\graphicspath{{../static/}}
+
+\newcommand{\comments}[1]{}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+
+\begin{document}
+
+
+
+
+
+
+
+
+\end{document}
