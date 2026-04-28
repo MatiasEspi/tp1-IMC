@@ -50,7 +50,7 @@
 
 
 \titulo{Trabajo Práctico Nº1}
-\subtitulo{Programación Lineal}
+\subtitulo{Dinámica no lineal}
 
 \fecha{\today}
 
@@ -73,8 +73,1506 @@
 
 \begin{document}
 
+\maketitle
+
+%==================================================
+% INTRODUCCIÓN
+%==================================================
+\section*{Introducción}
+
+El problema del movimiento planetario fue uno de los primeros en mostrar cómo un fenómeno físico podía describirse mediante un modelo matemático preciso. A partir de las observaciones astronómicas, Johannes Kepler formuló empíricamente sus leyes del movimiento planetario, entre ellas que los planetas describen órbitas elípticas con el Sol ubicado en uno de sus focos.
+
+Posteriormente, Isaac Newton dio una explicación dinámica de estas leyes mediante la ley de gravitación universal. Al aplicar la segunda ley de Newton y utilizar la conservación del momento angular, el problema se reduce a una ecuación diferencial para la variable
+
+\[
+u(\theta)=\frac{1}{r(\theta)},
+\]
+
+donde $r(\theta)$ representa la distancia entre el planeta y el Sol en función del ángulo polar. En el caso puramente newtoniano se obtiene
+
+\[
+u''(\theta)+u(\theta)=\frac{1}{\alpha},
+\]
+
+cuya solución general es
+
+\[
+u(\theta)=\frac{1}{\alpha}\left(1+\varepsilon\cos\theta\right),
+\]
+
+y por lo tanto
+
+\[
+r(\theta)=\frac{\alpha}{1+\varepsilon\cos\theta}.
+\]
+
+Esta expresión describe una cónica: para $0\leq \varepsilon <1$ se obtiene una elipse, para $\varepsilon=1$ una parábola y para $\varepsilon>1$ una hipérbola. De este modo, las órbitas elípticas no se imponen como hipótesis, sino que surgen naturalmente del potencial gravitatorio newtoniano.
+
+Sin embargo, observaciones de alta precisión muestran pequeñas discrepancias respecto de este modelo. El caso más conocido es el de Mercurio, cuyo perihelio —el punto de máxima cercanía al Sol— presenta un avance angular que no puede explicarse completamente mediante la mecánica clásica. En el modelo de Kepler la órbita debería cerrarse exactamente sobre sí misma, mientras que experimentalmente se observa un leve desplazamiento del perihelio en cada revolución.
+
+La explicación de este fenómeno surge con la Teoría General de la Relatividad de Albert Einstein, donde la gravedad deja de interpretarse como una fuerza en el sentido newtoniano y pasa a entenderse como una manifestación de la curvatura del espacio-tiempo producida por la masa del Sol. Este efecto se vuelve relevante en sistemas con campos gravitatorios intensos o velocidades elevadas, como ocurre en Mercurio por su cercanía al Sol. Para planetas más alejados, la corrección relativista es extremadamente pequeña y el modelo newtoniano sigue siendo una excelente aproximación.
+
+Resolver exactamente este problema dentro del marco completo de la relatividad general resulta considerablemente más complejo. Por ello, suele utilizarse una corrección efectiva sobre el modelo clásico, obtenida como una aproximación dominante del problema relativista:
+
+\[
+\ddot{u}(\theta)+u(\theta)-\frac{1}{\alpha}-\delta u^{2}(\theta)=0,
+\]
+
+donde el término no lineal proporcional a $\delta$ representa la principal contribución relativista.
+
+La presencia de este término rompe la periodicidad exacta de la solución clásica: la órbita deja de cerrarse perfectamente y el perihelio se desplaza ligeramente en cada vuelta. La trayectoria sigue siendo localmente muy similar a una elipse, pero cada revolución no coincide exactamente con la anterior, generando una sucesión de órbitas apenas desfasadas entre sí. Este fenómeno se conoce como precesión del perihelio.
+
+El objetivo de este trabajo consiste en estudiar el problema de Kepler clásico y su corrección relativista, analizar la diferencia entre ambos modelos, observar la aparición de la precesión orbital y comparar resultados para distintas condiciones iniciales y valores de los parámetros.
+
+\newpage
+%==================================================
+% Herramientas utilizadas?
+%==================================================
 
 
+%==================================================
+% DESARROLLO
+%==================================================
+
+\section*{Resolución de ejercicios}
+
+%--------------------------------------------------
+% EJERCICIO 1
+%--------------------------------------------------
+
+\section*{Ejercicio 1}
+
+Formular el problema como un sistema de ecuaciones diferenciales de primer orden de la forma
+
+\[
+\dot{y} = f(\theta,y),
+\]
+
+teniendo en cuenta que la variable independiente no es el tiempo, sino el ángulo polar $\theta$.
+
+\vspace{0.5 cm}
+
+\begin{solution}
+
+Partimos de la ecuación diferencial dada por el problema:
+
+\[
+\ddot{u}(\theta) + u(\theta) - \frac{1}{\alpha} - \delta u^2(\theta)=0,
+\]
+
+donde
+
+\[
+u(\theta)=\frac{1}{r(\theta)}.
+\]
+
+Como se trata de una ecuación diferencial ordinaria de segundo orden, para escribirla como un sistema de primer orden introducimos las variables
+
+\[
+y_1(\theta)=u(\theta),
+\qquad
+y_2(\theta)=\dot{u}(\theta).
+\]
+
+De esta forma,
+
+\[
+\dot{y}_1(\theta)=y_2(\theta).
+\]
+
+Además, despejando de la ecuación original,
+
+\[
+\ddot{u}(\theta)=\frac{1}{\alpha}+\delta u^2(\theta)-u(\theta),
+\]
+
+por lo tanto
+
+\[
+\dot{y}_2(\theta)=\frac{1}{\alpha}+\delta y_1^2(\theta)-y_1(\theta).
+\]
+
+En consecuencia, el problema puede escribirse como el sistema de primer orden
+
+\[
+\begin{cases}
+\dot{y}_1 = y_2, \\[0.2cm]
+\dot{y}_2 = \dfrac{1}{\alpha} + \delta y_1^2 - y_1.
+\end{cases}
+\]
+
+Si definimos
+
+\[
+y(\theta)=
+\begin{pmatrix}
+y_1(\theta) \\
+y_2(\theta)
+\end{pmatrix},
+\]
+
+entonces la formulación vectorial queda
+
+\[
+\dot{y}=f(\theta,y),
+\]
+
+con
+
+\[
+f(\theta,y)=
+\begin{pmatrix}
+y_2 \\
+\dfrac{1}{\alpha}+\delta y_1^2-y_1
+\end{pmatrix}.
+\]
+
+Debe destacarse que la variable independiente no es el tiempo físico, sino el ángulo polar $\theta$, por lo que la evolución del sistema describe la trayectoria orbital en función de la posición angular del planeta alrededor del Sol.
+
+
+\end{solution}
+
+\newpage
+
+%--------------------------------------------------
+% EJERCICIO 2
+%--------------------------------------------------
+
+\section*{Ejercicio 2}
+
+Resolver el problema de Kepler para $\delta = 0$, utilizando las condiciones iniciales dadas
+
+\[
+r(0)=\frac{\alpha}{1+\varepsilon},
+\qquad
+\dot r(0)=0.
+\]
+
+Graficar soluciones con $\alpha = 1$ para distintos valores de $\varepsilon$ y analizar el comportamiento para $\theta > 2\pi$, es decir, luego de varias vueltas orbitales.
+
+\vspace{0.5 cm}
+
+\begin{solution}
+
+Para $\delta = 0$, la ecuación diferencial se reduce a
+
+\[
+u''(\theta)+u(\theta)=\frac{1}{\alpha},
+\]
+
+donde
+
+\[
+u(\theta)=\frac{1}{r(\theta)}.
+\]
+
+Se trata de una ecuación lineal de segundo orden con coeficientes constantes. Para resolverla, primero consideramos la ecuación homogénea asociada
+
+\[
+u''(\theta)+u(\theta)=0.
+\]
+
+Introduciendo las variables
+
+\[
+y_1(\theta)=u(\theta),
+\qquad
+y_2(\theta)=u'(\theta),
+\]
+
+el problema puede escribirse como el sistema lineal
+
+\[
+\begin{pmatrix}
+y_1' \\
+y_2'
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+y_1 \\
+y_2
+\end{pmatrix}.
+\]
+
+Es decir,
+
+\[
+X' = AX,
+\qquad
+A=
+\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}.
+\]
+
+Si la matriz $A$ es diagonalizable, la solución general del sistema puede escribirse como
+
+\[
+X(\theta)
+=
+c_1 v_1 e^{\lambda_1 \theta}
++
+c_2 v_2 e^{\lambda_2 \theta},
+\]
+
+donde $\lambda_1,\lambda_2$ son los autovalores de $A$ y
+$v_1,v_2$ sus autovectores asociados.
+
+Calculamos primero los autovalores:
+
+\[
+\det(A-\lambda I)
+=
+\begin{vmatrix}
+-\lambda & 1 \\
+-1 & -\lambda
+\end{vmatrix}
+=
+\lambda^2 + 1 = 0.
+\]
+
+Por lo tanto,
+
+\[
+\lambda_1 = i,
+\qquad
+\lambda_2 = -i.
+\]
+
+Para $\lambda_1=i$:
+
+\[
+(A-iI)v=0
+\]
+
+\[
+\begin{pmatrix}
+-i & 1 \\
+-1 & -i
+\end{pmatrix}
+\begin{pmatrix}
+x \\
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \\
+0
+\end{pmatrix},
+\]
+
+de donde se obtiene
+
+\[
+y=ix.
+\]
+
+Tomando $x=1$,
+
+\[
+v_1=
+\begin{pmatrix}
+1 \\
+i
+\end{pmatrix}.
+\]
+
+Análogamente, para $\lambda_2=-i$:
+
+\[
+v_2=
+\begin{pmatrix}
+1 \\
+-i
+\end{pmatrix}.
+\]
+
+Entonces,
+
+\[
+X(\theta)
+=
+c_1
+\begin{pmatrix}
+1 \\
+i
+\end{pmatrix}
+e^{i\theta}
++
+c_2
+\begin{pmatrix}
+1 \\
+-i
+\end{pmatrix}
+e^{-i\theta}.
+\]
+
+Tomando la parte real de esta expresión, se recupera la solución real del problema:
+
+\[
+u_h(\theta)
+=
+C_1\cos\theta
++
+C_2\sin\theta.
+\]
+
+
+Buscando una solución particular constante, se obtiene
+
+\[
+u_p(\theta)=\frac{1}{\alpha}.
+\]
+
+Por lo tanto,
+
+\[
+u(\theta)=C_1\cos\theta + C_2\sin\theta + \frac{1}{\alpha}.
+\]
+
+Ahora, para hallar las constantes de integracion, aplicamos las condiciones iniciales.
+
+\[
+r(0)=\frac{\alpha}{1+\varepsilon},
+\]
+
+\[
+\dot r(0)=0
+\]
+
+entonces
+
+\[
+u(0)=\frac{1}{r(0)}
+=
+\frac{1+\varepsilon}{\alpha}.
+\]
+
+Evaluando en la solución general:
+
+\[
+u(0)=C_1+\frac{1}{\alpha}
+=
+\frac{1+\varepsilon}{\alpha},
+\]
+
+\[
+C_1=\frac{\varepsilon}{\alpha}.
+\]
+
+Luego
+
+\[
+u'(\theta)=-\frac{r'(\theta)}{r^2(\theta)},
+\]
+
+esto implica
+
+\[
+u'(0)=-\frac{r'(0)}{r^2(0)} = 0
+\]
+
+
+
+
+Evaluando en la derivada respecto a $\theta$ de la solución general:
+
+\[
+u'(\theta)=-C_1\sin\theta + C_2\cos\theta,
+\]
+
+\[
+u'(0)=C_2=0.
+\]
+
+Finalmente,
+
+\[
+u(\theta)=\frac{1}{\alpha}\left(1+\varepsilon\cos\theta\right).
+\]
+
+Como $u(\theta)=1/r(\theta)$, se obtiene la expresión explícita de la órbita:
+
+\[
+r(\theta)=
+\frac{\alpha}{1+\varepsilon\cos\theta}.
+\]
+
+Para que la expresión
+
+\[
+r(\theta)=\frac{\alpha}{1+\varepsilon\cos\theta}
+\]
+
+tenga sentido físico, debe cumplirse
+
+\[
+r(\theta)>0,
+\]
+
+es decir,
+
+\[
+1+\varepsilon\cos\theta>0.
+\]
+
+De aquí obtenemos
+
+\[
+\cos\theta>-\frac{1}{\varepsilon}.
+\]
+
+y los ángulos permitidos quedan acotados por
+
+\[
+-\theta_0<\theta<\theta_0,
+\]
+
+donde
+
+\[
+\theta_0=\arccos\left(-\frac{1}{\varepsilon}\right).
+\]
+
+Equivalentemente,
+
+\[
+\theta\in
+\left(
+-\arccos\left(-\frac{1}{\varepsilon}\right),
+\,
+\arccos\left(-\frac{1}{\varepsilon}\right)
+\right).
+\]
+
+
+
+Esta ecuación describe la trayectoria que sigue un planeta partiendo desde el perielio, esto debido a que r'(0) indica que la distancia al foco es maxima o minima, y la condicion inicial r(0) = a/(1+e) inidica que inicia desde el la menor distancia posible respecto al foco (perihelio).
+
+Luego, se puede demostrar que la ecuacion describe la trayectoria de una conica segun el parametro epsilon.
+
+
+\[
+r(\theta)=\frac{\alpha}{1+\varepsilon\cos\theta}.
+\]
+
+Lo primero que se puede notar es que si epsilon es 0 el radio es constante para todo $\theta$, en concecuencia es una circunferencia.
+
+Ahora revisamos los casos no triviales. 
+
+Usamos la relación entre coordenadas polares y cartesianas
+
+\[
+x=r\cos\theta,
+\qquad
+y=r\sin\theta,
+\qquad
+r=\sqrt{x^2+y^2}.
+\]
+
+Multiplicando por el denominador,
+
+\[
+r(1+\varepsilon\cos\theta)=\alpha.
+\]
+
+Como
+
+\[
+\cos\theta=\frac{x}{r},
+\]
+
+resulta
+
+\[
+r+\varepsilon x=\alpha,
+\]
+
+es decir,
+
+\[
+\sqrt{x^2+y^2}=\alpha-\varepsilon x.
+\]
+
+Elevando al cuadrado ambos miembros,
+
+\[
+x^2+y^2
+=
+\alpha^2
+-2\alpha\varepsilon x
++\varepsilon^2x^2.
+\]
+
+Reordenando,
+
+\[
+(1-\varepsilon^2)x^2
++
+y^2
++
+2\alpha\varepsilon x
+-
+\alpha^2
+=0.
+\]
+
+
+(Si $\varepsilon = 1 \Rightarrow{
+x =
+-\frac{y^2}{2\alpha\varepsilon}
++
+\frac{\alpha}{2\varepsilon}
+}$ y la solucion nos da una parabola)
+
+
+Ahora completamos cuadrados en la variable \(x\):
+
+\[
+(1-\varepsilon^2)
+\left(
+x^2+
+\frac{2\alpha\varepsilon}{1-\varepsilon^2}x
+\right)
++
+y^2
+=
+\alpha^2.
+\]
+
+Entonces,
+
+\[
+(1-\varepsilon^2)
+\left[
+\left(
+x+\frac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
+-
+\left(
+\frac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
+\right]
++
+y^2
+=
+\alpha^2.
+\]
+
+Simplificando,
+
+\[
+(1-\varepsilon^2)
+\left(
+x+\frac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
++
+y^2
+=
+\alpha^2
+-
+\left(
+\frac{\alpha^2\varepsilon^2}{1-\varepsilon^2}
+\right)
+\]
+
+\[
+(1-\varepsilon^2)
+\left(
+x+\frac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
++
+y^2
+=
+\left(
+\frac{\alpha^2(1-\varepsilon^2}{1-\varepsilon^2}
+\right)
++
+\left(
+\frac{\alpha^2\varepsilon^2}{1-\varepsilon^2}
+\right)
+\]
+
+\[
+(1-\varepsilon^2)
+\left(
+x+\frac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
++
+y^2
+=
+\frac{\alpha^2}{1-\varepsilon^2}.
+\]
+
+Dividiendo ambos lados por
+\(\dfrac{\alpha^2}{1-\varepsilon^2}\), obtenemos
+
+\[
+\frac{
+\left(
+x+\dfrac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
+}{
+\left(
+\dfrac{\alpha}{1-\varepsilon^2}
+\right)^2
+}
++
+\frac{y^2}{
+\dfrac{\alpha^2}{1-\varepsilon^2}
+}
+=
+1.
+\]
+
+Finalmente,
+
+\[
+\frac{
+\left(
+x+\dfrac{\alpha\varepsilon}{1-\varepsilon^2}
+\right)^2
+}{a^2}
++
+\frac{y^2}{b^2}
+=
+1,
+\]
+
+donde
+
+\[
+a=\frac{\alpha}{1-\varepsilon^2},
+\qquad
+b=\frac{\alpha}{\sqrt{1-\varepsilon^2}}.
+\]
+
+Esta es la ecuación cartesiana de una elipse siempre que
+
+\[
+1-\varepsilon^2>0,
+\]
+
+es decir,
+
+\[
+0\leq\varepsilon<1.
+\]
+
+donde las soluciones se pueden describir de la siguiente forma:
+
+\[
+\frac{
+\left(
+x+ c
+\right)^2
+}{a^2}
++
+\frac{y^2}{b^2}
+=
+1,
+\]
+
+Donde $a,b$ y $c$ pertenecen a los reales.
+
+En cambio cuando epsilon es mayor a 1 las soluciones poseen esta forma:
+
+\[
+\frac{
+\left(
+x+ c
+\right)^2
+}{a^2}
+-
+\frac{y^2}{b^2}
+=
+1,
+\]
+
+Donde $a,b$ y $c$ pertenecen a los reales.
+
+La cual es la forma que poseen las hiperbolas.
+
+En resumen:
+\[
+\begin{cases}
+0 \leq \varepsilon < 1 & \text{: elipse} \\
+\varepsilon = 1 & \text{: parábola} \\
+\varepsilon > 1 & \text{: hipérbola}
+\end{cases}
+\]
+
+Donde c es el desfase respecto el centro de la elipse para que este centrada en uno de los focos, a y b son parametros dependientes de a y epsilon (agregar algo mas).
+
+\vspace{0.5 cm}
+
+Al graficar distintos valores de $\varepsilon$, se observa que:
+
+\begin{itemize}
+\item si $\varepsilon = 0$, la órbita es circular;
+\item para $0 < \varepsilon < 1$, la órbita es una elipse cada vez más excéntrica;
+\item cuanto mayor es $\varepsilon$, mayor es la diferencia entre perihelio y afelio.
+\end{itemize}
+
+Observaciones caso elipse.
+
+
+
+Además, para $\theta > 2\pi$, la solución repite exactamente la misma trayectoria, ya que la función $\cos\theta$ es periódica de período $2\pi$. Esto implica que la órbita se cierra perfectamente sobre sí misma y el perihelio permanece siempre en la misma dirección, característica fundamental del problema clásico de Kepler.
+
+\end{solution}
+
+\newpage
+
+
+
+\section*{Ejercicio 2}
+
+Resolver el problema de Kepler para $\delta = 0$, utilizando las condiciones iniciales dadas
+
+\[
+r(0)=\frac{\alpha}{1+\varepsilon},
+\qquad
+\dot r(0)=0.
+\]
+
+Graficar soluciones con $\alpha = 1$ para distintos valores de $\varepsilon$ y analizar el comportamiento para $\theta > 2\pi$, es decir, luego de varias vueltas orbitales.
+
+\vspace{0.5cm}
+
+\begin{solution}
+
+Para $\delta = 0$, la ecuación diferencial del problema de Kepler se reduce a
+
+\[
+u''(\theta)+u(\theta)=\frac{1}{\alpha},
+\qquad
+u(\theta)=\frac{1}{r(\theta)}.
+\]
+
+A partir de esta ecuación obtendremos la forma explícita de la órbita y luego analizaremos su interpretación geométrica.
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 1. Resolución de la ecuación diferencial}
+
+\vspace{0.2cm}
+
+Comenzamos estudiando la ecuación homogénea asociada:
+
+\[
+u''(\theta)+u(\theta)=0.
+\]
+
+Introduciendo
+
+\[
+y_1(\theta)=u(\theta),
+\qquad
+y_2(\theta)=u'(\theta),
+\]
+
+podemos escribirla como el sistema lineal
+
+\[
+\begin{pmatrix}
+y_1' \\
+y_2'
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+y_1 \\
+y_2
+\end{pmatrix},
+\]
+
+es decir,
+
+\[
+X'=AX,
+\qquad
+A=
+\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix}.
+\]
+
+Calculamos los autovalores de $A$:
+
+\[
+\det(A-\lambda I)
+=
+\begin{vmatrix}
+-\lambda & 1 \\
+-1 & -\lambda
+\end{vmatrix}
+=
+\lambda^2+1=0.
+\]
+
+Por lo tanto,
+
+\[
+\lambda_1=i,
+\qquad
+\lambda_2=-i.
+\]
+
+Esto muestra que la solución homogénea es oscilatoria y su forma real es
+
+\[
+\boxed{
+u_h(\theta)
+=
+C_1\cos\theta
++
+C_2\sin\theta.
+}
+\]
+
+Buscamos ahora una solución particular constante:
+
+\[
+u_p(\theta)=k.
+\]
+
+Sustituyendo en la ecuación,
+
+\[
+k=\frac{1}{\alpha}.
+\]
+
+\[
+\boxed{u_p(\theta)=\frac{1}{\alpha}}.
+\]
+
+Así, la solución general 
+
+\[
+u(\theta) = u_h(\theta) + u_p(\theta)
+\]
+
+\[
+\boxed{
+u(\theta)
+=
+C_1\cos\theta
++
+C_2\sin\theta
++
+\frac{1}{\alpha}.
+}
+\]
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 2. Aplicación de las condiciones iniciales}
+
+\vspace{0.2cm}
+
+Usamos ahora las condiciones dadas para determinar las constantes de integración de la solución general
+
+\[
+u(\theta)
+=
+C_1\cos\theta
++
+C_2\sin\theta
++
+\frac{1}{\alpha}.
+\]
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Primera condición inicial:} \(r(0)=\dfrac{\alpha}{1+\varepsilon}\)
+
+\vspace{0.2cm}
+
+Como
+
+\[
+u(\theta)=\frac{1}{r(\theta)},
+\]
+
+se obtiene
+
+\[
+u(0)
+=
+\frac{1}{r(0)}
+=
+\frac{1+\varepsilon}{\alpha}.
+\]
+
+Evaluando en la solución general:
+
+\[
+u(0)
+=
+C_1+\frac{1}{\alpha}
+=
+\frac{1+\varepsilon}{\alpha},
+\]
+
+de donde resulta
+
+\[
+\boxed{
+C_1=\frac{\varepsilon}{\alpha}
+}
+\]
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{Segunda condición inicial:} \(\dot r(0)=0\)
+
+\vspace{0.2cm}
+
+Sabemos que
+
+\[
+u'(\theta)
+=
+-\frac{r'(\theta)}{r^2(\theta)}.
+\]
+
+Por lo tanto, de
+
+\[
+\dot r(0)=0
+\]
+
+se sigue que
+
+\[
+u'(0)=0.
+\]
+
+Derivando la solución general:
+
+\[
+u'(\theta)
+=
+-C_1\sin\theta
++
+C_2\cos\theta,
+\]
+
+y evaluando en \(\theta=0\):
+
+\[
+u'(0)=C_2=0.
+\]
+
+Luego,
+
+\[
+\boxed{
+C_2=0
+}
+\]
+
+\vspace{0.4cm}
+
+Reemplazando ambas constantes en la solución general, obtenemos
+
+
+\[
+\boxed{
+u(\theta)
+=
+\frac{1}{\alpha}
+\left(
+1+\varepsilon\cos\theta
+\right)
+}
+\]
+
+Finalmente, como
+
+\[
+u(\theta)=\frac{1}{r(\theta)},
+\]
+
+la ecuación explícita de la órbita queda dada por
+
+\[
+\boxed{
+r(\theta)
+=
+\frac{\alpha}{1+\varepsilon\cos\theta}
+}
+\]
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 3. Interpretación física de las condiciones iniciales}
+
+\vspace{0.2cm}
+
+La condición
+
+\[
+r(0)=\frac{\alpha}{1+\varepsilon}
+\]
+
+corresponde a la menor distancia posible entre el cuerpo y el foco de atracción.
+
+Por otra parte,
+
+\[
+r'(0)=0
+\]
+
+indica que en $\theta=0$ el radio alcanza una distancia maxima o minima.
+
+En consecuencia, el movimiento comienza en el perihelio, es decir, en el punto de mínima distancia al foco.
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 4. Restricción física: condición $r(\theta)>0$}
+
+\vspace{0.2cm}
+
+Para que la solución tenga sentido físico debe cumplirse
+
+\[
+r(\theta)>0.
+\]
+
+Como
+
+\[
+r(\theta)
+=
+\frac{\alpha}{1+\varepsilon\cos\theta},
+\]
+
+esto exige que el denominador sea positivo:
+
+\[
+1+\varepsilon\cos\theta>0,
+\]
+
+o equivalentemente,
+
+\[
+\cos\theta>-\frac{1}{\varepsilon}.
+\]
+
+A partir de aquí aparecen distintos comportamientos según el valor de $\varepsilon$.
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 1:} \(0 \leq \varepsilon < 1\)
+
+\vspace{0.2cm}
+
+Como
+
+\[
+-\frac{1}{\varepsilon}\leq -1,
+\]
+
+la desigualdad se satisface para todo \(\theta\), ya que siempre se cumple
+
+\[
+-1\leq \cos\theta \leq 1.
+\]
+
+Por lo tanto,
+
+\[
+\boxed{
+r(\theta)>0
+\quad
+\text{para todo }
+\theta
+}
+\]
+
+y la trayectoria puede recorrerse completamente. Esto corresponde al caso de órbitas cerradas (elipses y circunferencia).
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 2:} \(\varepsilon = 1\)
+
+\vspace{0.2cm}
+
+En este caso,
+
+\[
+1+\cos\theta>0.
+\]
+
+Esto falla únicamente cuando
+
+\[
+\theta=(2k+1)\pi,
+\qquad
+k\in\mathbb{Z},
+\]
+
+donde el denominador se anula y
+
+\[
+r(\theta)\to\infty.
+\]
+
+Esto corresponde al caso parabólico, que representa la frontera entre órbitas cerradas y abiertas.
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 3:} \(\varepsilon > 1\)
+
+\vspace{0.2cm}
+
+Ahora sí la condición restringe los ángulos posibles:
+
+\[
+\cos\theta>-\frac{1}{\varepsilon}.
+\]
+
+Definiendo
+
+\[
+\theta_0
+=
+\arccos
+\left(
+-\frac{1}{\varepsilon}
+\right),
+\]
+
+se obtiene
+
+\[
+\boxed{
+-\theta_0
+<
+\theta
+<
+\theta_0
+}
+\]
+
+con
+
+\[
+\boxed{
+\theta_0
+=
+\arccos
+\left(
+-\frac{1}{\varepsilon}
+\right)
+}
+\]
+
+Esto refleja que, en el caso hiperbólico, la trayectoria no es cerrada y sólo existe en un intervalo angular finito.
+
+\vspace{0.5cm}
+
+\noindent
+\textbf{\large 5. Clasificación geométrica de la órbita}
+
+\vspace{0.2cm}
+
+La ecuación obtenida
+
+\[
+r(\theta)
+=
+\frac{\alpha}{1+\varepsilon\cos\theta}
+\]
+
+describe una cónica cuyo tipo depende del valor de \(\varepsilon\).
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 1:} \(\varepsilon = 0\)
+
+\vspace{0.2cm}
+
+Si
+
+\[
+\varepsilon=0,
+\]
+
+entonces
+
+\[
+r(\theta)=\alpha,
+\]
+
+por lo que el radio permanece constante para todo \(\theta\).
+
+Así,
+
+\[
+\boxed{
+\varepsilon = 0 \iff \text{La trayectoria es una circunferencia}
+}
+\]
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 2:} \(\varepsilon \neq 0\)
+
+\vspace{0.2cm}
+
+Para analizar los demás casos, usamos la relación entre coordenadas polares y cartesianas:
+
+\[
+x=r\cos\theta,
+\qquad
+y=r\sin\theta,
+\qquad
+r=\sqrt{x^2+y^2}.
+\]
+
+Multiplicando por el denominador:
+
+\[
+r(1+\varepsilon\cos\theta)=\alpha.
+\]
+
+Como
+
+\[
+\cos\theta=\frac{x}{r},
+\]
+
+obtenemos
+
+\[
+r+\varepsilon x=\alpha,
+\]
+
+es decir,
+
+\[
+\sqrt{x^2+y^2}
+=
+\alpha-\varepsilon x.
+\]
+
+Elevando al cuadrado:
+
+\[
+x^2+y^2
+=
+\alpha^2
+-
+2\alpha\varepsilon x
++
+\varepsilon^2x^2.
+\]
+
+Reordenando,
+
+\[
+(1-\varepsilon^2)x^2
++
+y^2
++
+2\alpha\varepsilon x
+-
+\alpha^2
+=
+0.
+\]
+
+La naturaleza de la cónica queda determinada por el signo de
+
+\[
+1-\varepsilon^2.
+\]
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Subcaso 2.1:} \(0<\varepsilon<1\)
+
+\vspace{0.2cm}
+
+Aquí se cumple
+
+\[
+1-\varepsilon^2>0,
+\]
+
+por lo que la ecuación cartesiana toma la forma de una elipse:
+
+\[
+\boxed{
+0\leq\varepsilon<1 \iff \text{La trayectoria es una elipse}
+}
+\]
+
+Cuanto mayor es \(\varepsilon\), mayor es la diferencia entre perihelio y afelio, es decir, mayor es la excentricidad de la órbita.
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Subcaso 2.2:} \(\varepsilon=1\)
+
+\vspace{0.2cm}
+
+En este caso,
+
+\[
+1-\varepsilon^2=0,
+\]
+
+y la ecuación se reduce a una parábola.
+
+\[
+\boxed{
+\varepsilon=1 \iff \text{La trayectoria es una parábola}
+}
+\]
+
+Este caso representa la transición entre órbitas ligadas y no ligadas.
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Subcaso 2.3:} \(\varepsilon>1\)
+
+\vspace{0.2cm}
+
+Aquí se tiene
+
+\[
+1-\varepsilon^2<0,
+\]
+
+y la ecuación adopta la forma característica de una hipérbola:
+
+\[
+\boxed{
+\varepsilon>1 \iff \text{La trayectoria es una hipérbola}
+}
+\]
+
+Se trata de una trayectoria abierta, compatible con cuerpos que no quedan ligados gravitacionalmente.
+
+\vspace{0.3cm}
+
+En resumen,
+
+\[
+\boxed{
+\begin{cases}
+\varepsilon=0 & \text{: circunferencia} \\
+0<\varepsilon<1 & \text{: elipse} \\
+\varepsilon=1 & \text{: parábola} \\
+\varepsilon>1 & \text{: hipérbola}
+\end{cases}
+}
+\]
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 6. Comportamiento para $\theta>2\pi$}
+
+\vspace{0.2cm}
+
+Observamos que
+
+\[
+r(\theta)
+=
+\frac{\alpha}{1+\varepsilon\cos\theta}
+\]
+
+depende de la función $\cos\theta$, la cual es periódica de período $2\pi$.
+
+Por lo tanto,
+
+\[
+r(\theta+2\pi)=r(\theta).
+\]
+
+Esto implica que, en el problema clásico de Kepler ($\delta=0$), la órbita se repite exactamente después de cada revolución: la trayectoria se cierra sobre sí misma y el perihelio permanece siempre en la misma dirección.
+
+Esta es una de las características fundamentales del problema kepleriano newtoniano y contrasta con el caso relativista, donde aparece la precesión del perihelio.
+
+\vspace{0.4cm}
+
+\noindent
+\textbf{\large 7. Analisis de graficos}
+
+\end{solution}
+
+\newpage
+
+%--------------------------------------------------
+% EJERCICIO 3
+%--------------------------------------------------
+
+\section*{Ejercicio 3}
+
+Resolver el problema relativista para
+
+\[
+\delta = 0.05
+\]
+
+bajo las mismas condiciones iniciales del ítem anterior y comparar con el caso clásico.
+
+Analizar el fenómeno de precesión del perihelio.
+
+
+
+\begin{solution}
+
+% Desarrollo aquí
+
+\end{solution}
+
+%==================================================
+% ANÁLISIS ADICIONAL
+%==================================================
+
+
+
+%==================================================
+% CONCLUSIÓN
+%==================================================
+\newpage
+
+\section*{Conclusión}
+
+En esta sección se sintetizan los principales resultados obtenidos, comparando el modelo clásico de Kepler con la corrección relativista y destacando la interpretación física de la precesión del perihelio.
+
+También se discute el alcance de los métodos analíticos y numéricos utilizados y la validez de las aproximaciones realizadas.
+
+\end{document}
 
 
 
