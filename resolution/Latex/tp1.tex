@@ -20,6 +20,8 @@
 \usepackage[most]{tcolorbox}
 \usepackage{titlesec}
 \usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{float}
 
 % Contador de ejercicios
 \newcounter{ejercicio}
@@ -52,14 +54,14 @@
 \titulo{Trabajo Práctico Nº1}
 \subtitulo{Dinámica no lineal}
 
-\fecha{\today}
+\fecha{Grupo 8}
 
 \materia{Introducción al modelado continuo}
 %\grupo{Grupo }
 
 \integrante{Espiñeira,  Matías}{464/22}{matiespi03@gmail.com}
-\integrante{}{}{}
-\integrante{}{}{}
+\integrante{Roda, Santiago}{1021/23}{santiroda04@gmail.com}
+\integrante{Romero, Santiago}{272/21}{santiagooromero1234@gmail.com}
 % Pongan cuantos integrantes quieran
 
 % Declaramos donde van a estar las figuras
@@ -80,49 +82,48 @@
 %==================================================
 \section*{Introducción}
 
-El problema del movimiento planetario fue uno de los primeros en mostrar cómo un fenómeno físico podía describirse mediante un modelo matemático preciso. A partir de las observaciones astronómicas, Johannes Kepler formuló empíricamente sus leyes del movimiento planetario, entre ellas que los planetas describen órbitas elípticas con el Sol ubicado en uno de sus focos.
+El problema del movimiento planetario permitió describir con precisión matemática las órbitas de los planetas. Kepler estableció empíricamente que los planetas se mueven en órbitas elípticas con el Sol en uno de sus focos.
 
-Posteriormente, Isaac Newton dio una explicación dinámica de estas leyes mediante la ley de gravitación universal. Al aplicar la segunda ley de Newton y utilizar la conservación del momento angular, el problema se reduce a una ecuación diferencial para la variable
+A partir de las leyes del movimiento y la interacción gravitatoria, es posible formular una ecuación que describe la forma de la órbita en función del ángulo.
 
-\[
-u(\theta)=\frac{1}{r(\theta)},
-\]
 
-donde $r(\theta)$ representa la distancia entre el planeta y el Sol en función del ángulo polar. En el caso puramente newtoniano se obtiene
-
+En el caso de Kepler se obtiene la ecuación diferencial
 \[
 u''(\theta)+u(\theta)=\frac{1}{\alpha},
 \]
 
-cuya solución general es
+con:
 
+\[
+u(\theta)=\frac{1}{r(\theta)}.
+\]
+
+
+donde \(\alpha\) es una constante del sistema.
+
+\vspace{0.75 cm}
+
+Su solución es
 \[
 u(\theta)=\frac{1}{\alpha}\left(1+\varepsilon\cos\theta\right),
 \]
-
 y por lo tanto
-
 \[
 r(\theta)=\frac{\alpha}{1+\varepsilon\cos\theta}.
 \]
 
-Esta expresión describe una cónica: para $0\leq \varepsilon <1$ se obtiene una elipse, para $\varepsilon=1$ una parábola y para $\varepsilon>1$ una hipérbola. De este modo, las órbitas elípticas no se imponen como hipótesis, sino que surgen naturalmente del potencial gravitatorio newtoniano.
 
-Sin embargo, observaciones de alta precisión muestran pequeñas discrepancias respecto de este modelo. El caso más conocido es el de Mercurio, cuyo perihelio —el punto de máxima cercanía al Sol— presenta un avance angular que no puede explicarse completamente mediante la mecánica clásica. En el modelo de Kepler la órbita debería cerrarse exactamente sobre sí misma, mientras que experimentalmente se observa un leve desplazamiento del perihelio en cada revolución.
+Sin embargo, al contar con mediciones más precisas, especialmente en el caso de Mercurio, se observa una pequeña discrepancia con el modelo: el perihelio no permanece en la misma posición, sino que se desplaza ligeramente en cada vuelta alrededor del Sol.
 
-La explicación de este fenómeno surge con la Teoría General de la Relatividad de Albert Einstein, donde la gravedad deja de interpretarse como una fuerza en el sentido newtoniano y pasa a entenderse como una manifestación de la curvatura del espacio-tiempo producida por la masa del Sol. Este efecto se vuelve relevante en sistemas con campos gravitatorios intensos o velocidades elevadas, como ocurre en Mercurio por su cercanía al Sol. Para planetas más alejados, la corrección relativista es extremadamente pequeña y el modelo newtoniano sigue siendo una excelente aproximación.
-
-Resolver exactamente este problema dentro del marco completo de la relatividad general resulta considerablemente más complejo. Por ello, suele utilizarse una corrección efectiva sobre el modelo clásico, obtenida como una aproximación dominante del problema relativista:
-
+La Teoría General de la Relatividad introduce correcciones al modelo clásico. En una aproximación efectiva, el sistema puede escribirse como
 \[
 \ddot{u}(\theta)+u(\theta)-\frac{1}{\alpha}-\delta u^{2}(\theta)=0,
 \]
+donde el término no lineal representa la corrección relativista.
 
-donde el término no lineal proporcional a $\delta$ representa la principal contribución relativista.
+Este término rompe el cierre exacto de la órbita: la trayectoria sigue siendo aproximadamente elíptica, pero el perihelio se desplaza en cada vuelta, fenómeno conocido como precesión del perihelio.
 
-La presencia de este término rompe la periodicidad exacta de la solución clásica: la órbita deja de cerrarse perfectamente y el perihelio se desplaza ligeramente en cada vuelta. La trayectoria sigue siendo localmente muy similar a una elipse, pero cada revolución no coincide exactamente con la anterior, generando una sucesión de órbitas apenas desfasadas entre sí. Este fenómeno se conoce como precesión del perihelio.
-
-El objetivo de este trabajo consiste en estudiar el problema de Kepler clásico y su corrección relativista, analizar la diferencia entre ambos modelos, observar la aparición de la precesión orbital y comparar resultados para distintas condiciones iniciales y valores de los parámetros.
+El objetivo de este trabajo es comparar el modelo clásico y su corrección relativista, y analizar la aparición de la precesión orbital bajo distintas condiciones iniciales y parámetros.
 
 \newpage
 %==================================================
@@ -254,27 +255,102 @@ Graficar soluciones con $\alpha = 1$ para distintos valores de $\varepsilon$ y a
 
 \begin{solution}
 
-Para $\delta = 0$, la ecuación diferencial del problema de Kepler se reduce a
+El sistema con $\delta = 0$ queda de la siguiente forma: 
 
 \[
-u''(\theta)+u(\theta)=\frac{1}{\alpha},
-\qquad
-u(\theta)=\frac{1}{r(\theta)}.
+f(\theta,y)=
+\begin{pmatrix}
+y_2 \\
+\dfrac{1}{\alpha}+-y_1
+\end{pmatrix}.
 \]
 
-A partir de esta ecuación obtendremos la forma explícita de la órbita y luego analizaremos su interpretación geométrica.
+Las condiciones iniciales dadas en terminos de $r(\theta)$ se traducen a:
 
+\[
+y_1(0) = u(0) = \frac{1}{r(0)}=\frac{1+\varepsilon}{\alpha}
+\]
+
+\[
+y_2(0) = \dot u(0) = -\frac{\dot r(0)}{r^2(0)} = 0
+\]
+
+\vspace{0.4cm}
+\noindent
+\textbf{\large 1. Analisis de soluciones numericas}
+
+En primer lugar, se estudió el sistema de manera numérica variando los valores del parámetro \(\varepsilon\).
+
+A partir del análisis de los gráficos obtenidos, se observaron trayectorias claramente diferenciadas según el valor de \(\varepsilon\), las cuales pueden agruparse en dos categorías principales: el caso \(0 \leq \varepsilon < 1\) y el caso \(\varepsilon > 1\).
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Caso 1:} \(0 \leq \varepsilon < 1\)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Resolucion/Graficos/elipses.png}
+    \caption{Trayectorias elípticas para \(0 \leq \varepsilon < 1\).}
+\end{figure}
+
+Se observa que las trayectorias correspondientes a \(0 \leq \varepsilon < 1\) describen órbitas elípticas, con el Sol ubicado en uno de sus focos, en concordancia con las leyes de Kepler. Para valores pequeños de \(\varepsilon\), la órbita se aproxima a una circunferencia. Sin embargo, a medida que \(\varepsilon\) aumenta, el perihelio (punto de máxima cercanía al Sol) disminuye progresivamente, mientras que el afelio (punto de máxima distancia al Sol) crece de manera considerable..
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Resolucion/Graficos/orbitas_cerradas_rVSt.png}
+    \caption{Grafico $r$ vs $\theta$ para trayectorias elípticas con \(0 \leq \varepsilon < 1\).}
+\end{figure}
+
+En la Figura 2 puede apreciarse con mayor claridad que las trayectorias son periódicas, con período \(2\pi\), independientemente del valor de \(\varepsilon\). Además, se observa que todas las curvas, sin importar la excentricidad, se intersectan en los puntos correspondientes a \(\theta = \pi/2 + 2\pi k\), con \(k \in \mathbb{Z}\).
+
+Del mismo modo, los extremos de la función también se presentan siempre en los mismos valores angulares: los mínimos, correspondientes al perihelio (máxima cercanía al Sol), ocurren en \(\theta = 0 + 2\pi k\), mientras que los máximos, asociados al afelio (máxima distancia al Sol), se ubican en \(\theta = \pi + 2\pi k\), con \(k \in \mathbb{Z}\).
+
+\vspace{0.5 cm}
+
+\noindent
+\textbf{Caso 2:} \(\varepsilon > 1\)
+
+En este escenario aparece una dificultad importante: existen soluciones matemáticamente válidas que carecen de sentido físico. Esto ocurre porque surgen trayectorias que no representan un movimiento consistente con las leyes de Newton, ya que algunas partículas parecen aproximarse al Sol y desviarse antes de alcanzarlo sin que exista una fuerza externa que justifique dicho comportamiento.
+
+Tras analizar el código, se observó que esto sucede en aquellos valores de \(\theta\) para los cuales el radio \(r\) toma valores negativos. Esta situación genera trayectorias anómalas desde el punto de vista físico. En cambio, cuando \(r > 0\), las soluciones obtenidas corresponden a trayectorias coherentes con la interpretación mecánica del problema.
+
+Una vez descartadas estas trayectorias no físicas, puede analizarse el efecto de \(\varepsilon\) sobre las órbitas restantes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Resolucion/Graficos/hiperbolas.png}
+    \caption{Trayectorias para \(\varepsilon \geq 1\).}
+\end{figure}
+
+En primer lugar, se observa que estas trayectorias no son cerradas. Esto puede justificarse por la discontinuidad que aparece a partir de ciertos valores de \(\theta\): existe un valor \(\theta_0 \in (0,\pi)\) tal que, fuera del intervalo \(-\theta_0 \leq \theta \leq \theta_0\), el radio se vuelve negativo. Como consecuencia, la trayectoria física queda restringida únicamente a dicho intervalo y no vuelve a intersectarse consigo misma.
+
+Por otro lado, el parámetro \(\varepsilon\) modifica la curvatura de las trayectorias. Cuando \(\varepsilon\) se aproxima a 1, la órbita tiende a asemejarse a una parábola. En cambio, a medida que \(\varepsilon\) aumenta, la desviación de la trayectoria se vuelve menos pronunciada y la curva se aproxima progresivamente a una recta. En el límite \(\varepsilon \to \infty\), se sospecha que la trayectoria converge hacia una recta vertical, correspondiente a \(x = 0\) en coordenadas cartesianas.
+
+Respecto al punto de máxima cercanía al Sol, se observa que las trayectorias con mayor valor de \(\varepsilon\) pasan más próximas al foco, aunque con una desviación angular menor. En contraste, aquellas con valores de \(\varepsilon\) más cercanos a 1 presentan un punto de máxima aproximación más alejado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Resolucion/Graficos/orbitas_abiertas_rVSt.png}
+    \caption{Grafico $r$ vs $\theta$ para trayectorias con \(0 \leq \varepsilon < 1\).}
+\end{figure}
+
+De la Figura 4 puede extraerse información adicional relevante. En primer lugar, al igual que en el caso elíptico, todas las curvas se intersectan en \(\theta = \pi/2\). Además, para \(\theta \in (-\pi/2, \pi/2)\), las trayectorias presentan un comportamiento similar; sin embargo, fuera de ese rango, se separan y se alejan indefinidamente en distintas direcciones.
+
+Finalmente, se observa que para cada \(\varepsilon > 1\) parece existir un valor máximo de \(\theta\), menor que \(\pi\), que actúa como una asíntota vertical de la función \(r(\theta)\), indicando el límite del dominio de theta en la solucion fisica.
 \vspace{0.4cm}
 
 \noindent
-\textbf{\large 1. Resolución de la ecuación diferencial}
+\textbf{\large 2. Resolución de la ecuación diferencial}
+
+Para lograr una comprensión más completa del problema, resulta mu practico que, en este caso, el sistema admita una solución analítica exacta. Esto permite no solo validar los resultados obtenidos numéricamente, sino también interpretar con mayor profundidad el comportamiento de las trayectorias y la influencia de los distintos parámetros del sistema.
 
 \vspace{0.2cm}
 
 Comenzamos estudiando la ecuación homogénea asociada:
 
 \[
-u''(\theta)+u(\theta)=0.
+\ddot{u}(\theta)+u(\theta)=0.
 \]
 
 Introduciendo
@@ -282,15 +358,15 @@ Introduciendo
 \[
 y_1(\theta)=u(\theta),
 \qquad
-y_2(\theta)=u'(\theta),
+y_2(\theta)=\dot{u}(\theta),
 \]
 
 podemos escribirla como el sistema lineal
 
 \[
 \begin{pmatrix}
-y_1' \\
-y_2'
+\dot{y_1} \\
+\dot{y_2}
 \end{pmatrix}
 =
 \begin{pmatrix}
@@ -385,11 +461,11 @@ C_2\sin\theta
 \vspace{0.4cm}
 
 \noindent
-\textbf{\large 2. Aplicación de las condiciones iniciales}
+\textbf{\large 3. Aplicación de las condiciones iniciales}
 
 \vspace{0.2cm}
 
-Usamos ahora las condiciones dadas para determinar las constantes de integración de la solución general
+Usamos ahora las condiciones dadas para determinar las constantes de integración de la solución general.
 
 \[
 u(\theta)
@@ -457,10 +533,14 @@ u'(\theta)
 -\frac{r'(\theta)}{r^2(\theta)}.
 \]
 
-Por lo tanto, de
+Por lo tanto,
 
 \[
-\dot r(0)=0
+u'(0)
+=
+-\frac{r'(0)}{r^2(0)}
+=
+0.
 \]
 
 se sigue que
@@ -548,8 +628,6 @@ r'(0)=0
 
 indica que en $\theta=0$ el radio alcanza una distancia maxima o minima.
 
-En consecuencia, el movimiento comienza en el perihelio, es decir, en el punto de mínima distancia al foco.
-
 \vspace{0.4cm}
 
 \noindent
@@ -615,7 +693,7 @@ r(\theta)>0
 }
 \]
 
-y la trayectoria puede recorrerse completamente. Esto corresponde al caso de órbitas cerradas (elipses y circunferencia).
+Esto implica que la trayectoria puede recorrerse completamente y corresponde al caso de órbitas cerradas, es decir, circunferencias o elipses.
 
 \vspace{0.3cm}
 
@@ -695,7 +773,7 @@ con
 }
 \]
 
-Esto refleja que, en el caso hiperbólico, la trayectoria no es cerrada y sólo existe en un intervalo angular finito.
+Esto refleja que, en el caso hiperbólico, la trayectoria no es cerrada y sólo existe dentro de un intervalo finito, determinado por los valores de \(\theta\) para los cuales el radio permanece positivo. Fuera de ese intervalo, \(r(\theta)\) se vuelve negativo y la solución deja de tener interpretación física.
 
 \vspace{0.5cm}
 
@@ -704,7 +782,8 @@ Esto refleja que, en el caso hiperbólico, la trayectoria no es cerrada y sólo 
 
 \vspace{0.2cm}
 
-La ecuación obtenida
+
+Se obtuvo la siguiente ecuación para describir las trayectorias:
 
 \[
 r(\theta)
@@ -712,93 +791,9 @@ r(\theta)
 \frac{\alpha}{1+\varepsilon\cos\theta}
 \]
 
-describe una cónica cuyo tipo depende del valor de \(\varepsilon\).
+Sin embargo, a partir de esta expresión en coordenadas polares no es inmediato si las trayectorias corresponden efectivamente a elipses, parábolas o hipérbolas, ni por qué el valor de \(\varepsilon\) determina cada uno de estos casos.
 
-\vspace{0.3cm}
-
-\noindent
-\textbf{Caso 1:} \(\varepsilon = 0\)
-
-\vspace{0.2cm}
-
-Si
-
-\[
-\varepsilon=0,
-\]
-
-entonces
-
-\[
-r(\theta)=\alpha,
-\]
-
-por lo que el radio permanece constante para todo \(\theta\).
-
-Así,
-
-\[
-\boxed{
-\varepsilon = 0 \iff \text{La trayectoria es una circunferencia}
-}
-\]
-
-\vspace{0.3cm}
-
-\noindent
-\textbf{Caso 2:} \(\varepsilon \neq 0\)
-
-\vspace{0.2cm}
-
-Para analizar los demás casos, usamos la relación entre coordenadas polares y cartesianas:
-
-\[
-x=r\cos\theta,
-\qquad
-y=r\sin\theta,
-\qquad
-r=\sqrt{x^2+y^2}.
-\]
-
-Multiplicando por el denominador:
-
-\[
-r(1+\varepsilon\cos\theta)=\alpha.
-\]
-
-Como
-
-\[
-\cos\theta=\frac{x}{r},
-\]
-
-obtenemos
-
-\[
-r+\varepsilon x=\alpha,
-\]
-
-es decir,
-
-\[
-\sqrt{x^2+y^2}
-=
-\alpha-\varepsilon x.
-\]
-
-Elevando al cuadrado:
-
-\[
-x^2+y^2
-=
-\alpha^2
--
-2\alpha\varepsilon x
-+
-\varepsilon^2x^2.
-\]
-
-Reordenando,
+Para analizar la naturaleza de la órbita, expresamos la ecuación en coordenadas cartesianas, obteniendo
 
 \[
 (1-\varepsilon^2)x^2
@@ -812,16 +807,17 @@ y^2
 0.
 \]
 
-La naturaleza de la cónica queda determinada por el signo de
+De esta forma, se verifica que la trayectoria corresponde a una sección cónica, cuya naturaleza queda determinada por el signo del coeficiente
 
 \[
 1-\varepsilon^2.
 \]
 
+
 \vspace{0.3cm}
 
 \noindent
-\textbf{Subcaso 2.1:} \(0<\varepsilon<1\)
+\textbf{Caso:} \(0\leq\varepsilon<1\)
 
 \vspace{0.2cm}
 
@@ -839,12 +835,23 @@ por lo que la ecuación cartesiana toma la forma de una elipse:
 }
 \]
 
-Cuanto mayor es \(\varepsilon\), mayor es la diferencia entre perihelio y afelio, es decir, mayor es la excentricidad de la órbita.
+
+\vspace{0.5 cm}
+
+Observacion: Cuando epsilon es igual a 0 obtenemos:
+
+\[
+r(\theta) = a
+\]
+
+En consecuencia genera una circunferencia.
+
+
 
 \vspace{0.3cm}
 
 \noindent
-\textbf{Subcaso 2.2:} \(\varepsilon=1\)
+\textbf{Caso:} \(\varepsilon=1\)
 
 \vspace{0.2cm}
 
@@ -867,7 +874,7 @@ Este caso representa la transición entre órbitas ligadas y no ligadas.
 \vspace{0.3cm}
 
 \noindent
-\textbf{Subcaso 2.3:} \(\varepsilon>1\)
+\textbf{Caso:} \(\varepsilon>1\)
 
 \vspace{0.2cm}
 
@@ -895,44 +902,39 @@ En resumen,
 \boxed{
 \begin{cases}
 \varepsilon=0 & \text{: circunferencia} \\
-0<\varepsilon<1 & \text{: elipse} \\
+0\leq\varepsilon<1 & \text{: elipse} \\
 \varepsilon=1 & \text{: parábola} \\
 \varepsilon>1 & \text{: hipérbola}
 \end{cases}
 }
 \]
-
-\vspace{0.4cm}
+\vspace{0.5 cm}
 
 \noindent
-\textbf{\large 6. Comportamiento para $\theta>2\pi$}
+\textbf{\large 6. comportamiento para $\theta > 2\pi$}
 
-\vspace{0.2cm}
+\vspace{0.5 cm}
 
-Observamos que
+El comportamiento para \(\theta > 2\pi\) sólo resulta relevante en el caso de las trayectorias elípticas, ya que, como se analizó anteriormente, únicamente estas permanecen definidas para todo \(\theta \in \mathbb{R}\).
+
+Estas órbitas están descritas por
 
 \[
 r(\theta)
 =
-\frac{\alpha}{1+\varepsilon\cos\theta}
+\frac{\alpha}{1+\varepsilon\cos\theta},
 \]
 
-depende de la función $\cos\theta$, la cual es periódica de período $2\pi$.
-
-Por lo tanto,
+Conociendo que $0 \leq \varepsilon < 1$, la expresión depende únicamente de la función \(\cos\theta\), la cual es periódica de período \(2\pi\). En consecuencia,
 
 \[
 r(\theta+2\pi)=r(\theta).
 \]
 
-Esto implica que, en el problema clásico de Kepler ($\delta=0$), la órbita se repite exactamente después de cada revolución: la trayectoria se cierra sobre sí misma y el perihelio permanece siempre en la misma dirección.
-
-Esta es una de las características fundamentales del problema kepleriano newtoniano y contrasta con el caso relativista, donde aparece la precesión del perihelio.
+Esto implica que, en el problema clásico de Kepler (\(\delta = 0\)), la órbita se repite exactamente después de cada revolución, cerrándose sobre sí misma sin presentar modificaciones entre vueltas sucesivas. Esto se puede ver en las figuras 1 y 2.
 
 \vspace{0.4cm}
 
-\noindent
-\textbf{\large 7. Analisis de graficos}
 
 \end{solution}
 
@@ -958,7 +960,66 @@ Analizar el fenómeno de precesión del perihelio.
 
 \begin{solution}
 
-% Desarrollo aquí
+Para el analisis de los resultados vamos a  separar el analisis segun los tipos de obrbita (cerradas o abiertas) 
+
+\noindent
+\textbf{Caso:} Orbitas cerradas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resolucion/Graficos/orbitas_cerradas_rel.png}
+    \caption{Comparacion orbitas relativistas y keplerianas con $\varepsilon < 0$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resolucion/Graficos/orbitas_cerradas_rel_rVSt.png}
+    \caption{Grafico de $r$ vs $\theta$ para orbitas relativistas y keplerianas con $\varepsilon < 0$}
+\end{figure}
+
+
+De los graficos r vs  theta  podemos apreciar que en el caso relativista hay un corrimiento del perihelio a angulos cada vez mayores, fenomeno que no ocurre en el caso no relativista donde el perihelio siempre se alcanza en el mismo angulo. Este avance del perihelio se traduce, como se ve en los graficos de las trayectorias, en un traslado de las elipses descriptas por las trayectorias. Además,  del grafico r vs theta, podemos ver que ocurre una disminución en el tamaño de las orbitas que se acentúa mientras mayor es epsilon. 
+
+\vspace{0.5 cm}
+
+\noindent
+\textbf{Caso:} Orbitas abiertas.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resolucion/Graficos/orbitas_abiertas_rel.png}
+    \caption{Grafico de $r$ vs $\theta$ para orbitas relativistas y keplerianas con $\varepsilon \geq 0$}
+\end{figure}
+
+Para las orbitas abiertas podemos apreciar en lo gráficos que el termino relativista provoca un aumento en el ángulo de escape de la tierra respecto del caso no relativista, efecto que provoca que la trayectorias se vayan cerrando hasta el caso limite donde epsilon = 1, donde la trayectoria pasa de ser abierta para kepler a formar elipses. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Resolucion/Graficos/orbitas_abiertas_rel_rVSt.png}
+    \caption{Grafico de $r$ vs $\theta$ para orbitas relativistas y keplerianas con $\varepsilon < 0$}
+\end{figure}
+
+
+
+\vspace{0.5 cm}
+\noindent
+\textbf{\large 1. Efecto en la variacion de $\alpha$ en las soluciones}
+
+\vspace{0.5 cm}
+
+Al variar alfa y mantener constante epsilon, podemos ver (Figura 9) que tanto para orbitas cerradas como para las abiertas se produce un aumento en el perihelio al aumentar alfa, efecto que es esperable pues observando la solución analítica de la ecuación diferencial se ve que si se mantiene fijo el valor de epsilon, la posicion inicial depende solo de alfa. Por otra parte, se observa que la forma de la trayectorias es la misma al variar alpha, pues esta viene determinada por epsilon que es la excentricidad.
+
+En orbitas cerradas , al igual que en el caso no relativista, se puede ver que al aumentar el valor de alfa aumenta el perihelio y por lo tanto también el tamaño de las elipses descriptas. Sin embargo, en orbitas abiertas además se puede apreciar que al aumentar alpha las trayectorias se van abriendo y los ángulos de escape aumentan.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Resolucion/Graficos/orbitas_rel_alphas.png}
+    \caption{Grafico de orbitas relativistas y keplerianas con distintos $\alpha$ y $\varepsilon$}
+\end{figure}
+
+
 
 \end{solution}
 
@@ -974,15 +1035,5 @@ Analizar el fenómeno de precesión del perihelio.
 \newpage
 
 \section*{Conclusión}
-
-En esta sección se sintetizan los principales resultados obtenidos, comparando el modelo clásico de Kepler con la corrección relativista y destacando la interpretación física de la precesión del perihelio.
-
-También se discute el alcance de los métodos analíticos y numéricos utilizados y la validez de las aproximaciones realizadas.
-
-\end{document}
-
-
-
-
 
 \end{document}
